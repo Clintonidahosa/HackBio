@@ -42,7 +42,7 @@ Other uses of UL in cancer research include: Predictive modelling, anomaly detec
 A notable study used UL techniques on RNA data from breast cancer samples to show previously uncharacterized immune cell subtypes within the tumour micro-environment. This study identified new cell populations associated with immune evasion and response to therapy, offering new targets for immunotherapy (Yuanyuan et al., 2021). 
 
 ### Conclusion</a>
-These illustrate how unsupervised learning is being utilised in cancer research today to improve therapeutic approaches.
+These illustrate how unsupervised learning, through techniques like clustering and dimensionality reduction, is being utilised in cancer research today to enhance our understanding of the tumour microenvironment and improve therapeutic approaches.
 
 ### References</a>
 - IBM (2023). What is Unsupervised Learning? | IBM. [online] www.ibm.com. Available at: https://www.ibm.com/topics/unsupervised-learning.
