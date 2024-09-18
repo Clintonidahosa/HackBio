@@ -1,17 +1,5 @@
-**This file is to teach how to write codes in GIt**  
-* If the aim is to just store the codes, then they can be pushed from the local machine to the repository
-* If the aim is for a third party to copy and apply the code on their own local machine, then the code has to be presented in a simple and clear manner so it can be copied.
-* For example to print "doc_idahosa" and load plot packages:
-```
-print("doc_idahosa")
-library(gplots)
-doc_idahosa <- 3+4
-print(doc_idahosa)
-
-```
-
-```
 * import dataset from Github and view
+
 ```
 nhanes=read.csv("https://raw.githubusercontent.com/HackBio-Internship/public_datasets/main/R/nhanes.csv")
 View(nhanes)
