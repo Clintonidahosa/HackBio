@@ -3,6 +3,7 @@
 ```
 nhanes=read.csv("https://raw.githubusercontent.com/HackBio-Internship/public_datasets/main/R/nhanes.csv")
 View(nhanes)
+
 ```
 
 #Check all columns for distinct values to check for NA
