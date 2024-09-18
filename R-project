@@ -6,8 +6,10 @@ View(nhanes)
 
 ```
 
-#Check all columns for distinct values to check for NA
+* Check all columns for distinct values to check for NA
+```
 lapply(nhanes,unique)
+```
 
 
 #TASK 1 - DELETE ROWS WITH NA IN RELEVANT COLUMNS
