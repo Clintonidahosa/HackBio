@@ -1,3 +1,4 @@
+```
 * import dataset from Github and view
 ```
 nhanes=read.csv("https://raw.githubusercontent.com/HackBio-Internship/public_datasets/main/R/nhanes.csv")
@@ -116,3 +117,5 @@ print(t_test_2)
 t_test_3 <- t.test(AlcoholYear~RelationshipStatus, data = cleaned_data1)
 print(t_test_3)
 #p-value<0.05 hence there is significant difference in alcohol consumption between the two groups (reject null hypothesis)
+
+```
