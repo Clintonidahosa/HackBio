@@ -1,7 +1,8 @@
 **HackBio Internship Projects**
-This repository contains tasks and projects completed during my internship phase. 
-Each task focuses on applying data analysis techniques, statistical testing, and visualization to real-world datasets using R. 
-The repository showcases my progress in data manipulation, exploratory data analysis, and statistical interpretation throughout the internship.
+
+*This repository contains tasks and projects completed during my internship phase. 
+*Each task focuses on applying data analysis techniques, statistical testing, and visualization to real-world datasets using R. 
+*The repository showcases my progress in data manipulation, exploratory data analysis, and statistical interpretation throughout the internship.
 
 *Key Areas Covered:*
 * Data cleaning and preprocessing
