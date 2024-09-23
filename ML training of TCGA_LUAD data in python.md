@@ -1,8 +1,8 @@
 ### Task - Tumor Type Prediction
 This project uses the following datasets:
 
-1. **LUAD Normalized Data**: 
-2. **TCGA LUAD Metadata**: 
+1. **LUAD Normalized Data**:  [https://raw.githubusercontent.com/Clintonidahosa/HackBio-projects/refs/heads/main/luad_normalizedData.csv]
+2. **TCGA LUAD Metadata**:   [https://github.com/Clintonidahosa/HackBio-projects/blob/main/TCGA_LUAD_metadata.csv]
 
 ### How to Access
 * download the 2 datasets 
