@@ -54,8 +54,8 @@ print("First Few Rows of Merged Data:\n", merged_data.head())
 
 # Feature selection and classification
 # Convert categorical data using one-hot encoding and select the target column
-X = pd.get_dummies(merged_data.drop('barcode', axis=1), drop_first=True)
-y = merged_data['barcode']  # Use 'barcode' as the target column
+X = pd.get_dummies(merged_data.drop('tumor_type', axis=1), drop_first=True)
+y = merged_data['tumor_type']  # Use 'tumor_type' as the target column
 
 #delete rows with missing values
 X = X.dropna()
