@@ -19,6 +19,10 @@ data = pd.read_csv(url)
 url2 = "https://raw.githubusercontent.com/Clintonidahosa/HackBio-projects/refs/heads/main/TCGA_LUAD_metadata.csv"
 metadata = pd.read_csv(url2)
 
+print("Data Loaded Successfully")
+print("Data Shape:", data.shape)
+print("Metadata Shape:", metadata.shape)
+
 # Transpose normalized dataset so I can merge with metadata
 Trans_data = data.T
 Trans_data.reset_index(inplace=True)
@@ -38,11 +42,20 @@ modified_data.reset_index(drop=True, inplace=True)
 # Perform the outer merge with metadata
 merged_data = pd.merge(modified_data, metadata, on='barcode', how='outer')
 print("Outer Merge Result:\n", merged_data.head())
+print("Merged Data Shape:", merged_data.shape)
+print("First Few Rows of Merged Data:\n", merged_data.head())
 
 # Feature selection and classification
 # Convert categorical data using one-hot encoding and select the target column
 X = pd.get_dummies(merged_data.drop('barcode', axis=1), drop_first=True)
 y = merged_data['barcode']  # Use 'barcode' as the target column
+
+#delete rows with missing values
+X = X.dropna()
+y = y[X.index]  
+
+# Convert column names to strings
+X.columns = X.columns.astype(str)
 
 # Split the data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
@@ -65,6 +78,7 @@ rf.fit(X_train_selected, y_train)
 y_pred_rf = rf.predict(X_test_selected)
 
 # Evaluate performance
+print("Predictions Made")
 print("Random Forest Accuracy: ", accuracy_score(y_test, y_pred_rf)) 
 print("Classification Report:\n", classification_report(y_test, y_pred_rf))
 ```
