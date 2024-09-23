@@ -5,91 +5,80 @@ This project uses the following datasets:
 2. **TCGA LUAD Metadata**:   [https://github.com/Clintonidahosa/HackBio-projects/blob/main/TCGA_LUAD_metadata.csv]
 
 ```
- #importing necessary libraries
+#importing necessary libraries
 import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.feature_selection import SelectKBest, chi2
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, classification_report
 
 # Load datasets
-url = "https://raw.githubusercontent.com/Clintonidahosa/HackBio-projects/refs/heads/main/luad_normalizedData.csv"
-data = pd.read_csv(url)
+url_normdata = "https://raw.githubusercontent.com/Clintonidahosa/HackBio-projects/refs/heads/main/luad_normalizedData.csv"
+normdata = pd.read_csv(url_normdata)
 
-url2 = "https://raw.githubusercontent.com/Clintonidahosa/HackBio-projects/refs/heads/main/TCGA_LUAD_metadata.csv"
-metadata = pd.read_csv(url2)
+url_metadata = "https://raw.githubusercontent.com/Clintonidahosa/HackBio-projects/refs/heads/main/TCGA_LUAD_metadata.csv"
+metadata = pd.read_csv(url_metadata)
 
 print("Data Loaded Successfully")
-print("Data Shape:", data.shape)
-print("Metadata Shape:", metadata.shape)
+print("normdata Shape:", normdata.shape)
+print("metadata Shape:", metadata.shape)
 
+# Prepare training data
+X_train = metadata.drop(columns=['tumor_type'])  # Features
+y_train = metadata['tumor_type']  # Target
 
-
-
-# Transpose normalized dataset so I can merge with metadata
-Trans_data = data.T
+# Transpose normalized dataset
+Trans_data = normdata.T
 Trans_data.reset_index(inplace=True)
 
-# Add new header row "barcode" to transposed data so I can have common column with metadata
-new_header = pd.DataFrame({'index': ['barcode']})
-modified_data = pd.concat([new_header, Trans_data], ignore_index=True)
-print(modified_data)
+# Rename the first column to 'barcode' and drop the first row
+Trans_data.columns = ['barcode'] + list(Trans_data.iloc[0, 1:])  # Ensure the first column is 'barcode'
+Trans_data = Trans_data[1:]  # Remove the first row with the original column names
+Trans_data.reset_index(drop=True, inplace=True)
 
-# Set the first row as header
-modified_data.columns = modified_data.iloc[0]
-modified_data = modified_data[1:]  # Remove the first row from the data
+# Prepare test data
+X_test = Trans_data  # Test data after transposing
 
-# Remove the index row
-modified_data.reset_index(drop=True, inplace=True)
+# Ensure 'barcode' is available in X_test for final predictions
+if 'barcode' not in X_test.columns:
+    raise ValueError("The 'barcode' column is missing from the test data.")
 
-# Perform the outer merge with metadata
-merged_data = pd.merge(modified_data, metadata, on='barcode', how='outer')
-print("Outer Merge Result:\n", merged_data.head())
-print("Merged Data Shape:", merged_data.shape)
-print("First Few Rows of Merged Data:\n", merged_data.head())
+# Check for duplicate columns in the training set
+if X_train.columns.duplicated().any():
+    print("Duplicate columns found in training set.")
+    X_train = X_train.loc[:, ~X_train.columns.duplicated()]
 
+# Check for duplicate columns in the test set
+if X_test.columns.duplicated().any():
+    print("Duplicate columns found in test set.")
+    X_test = X_test.loc[:, ~X_test.columns.duplicated()]
 
+# One-hot encoding for categorical variables in training set
+X_train_encoded = pd.get_dummies(X_train, drop_first=True)
 
+# Train Random Forest model
+model = RandomForestClassifier(random_state=42)
+model.fit(X_train_encoded, y_train)
 
+# One-hot encoding for test set
+X_test_encoded = pd.get_dummies(X_test.drop(columns=['barcode']), drop_first=True)
 
-# Feature selection and classification
-# Convert categorical data using one-hot encoding and select the target column
-X = pd.get_dummies(merged_data.drop('tumor_type', axis=1), drop_first=True)
-y = merged_data['tumor_type']  # Use 'tumor_type' as the target column
+# Align columns of test set with training set
+X_test_encoded = X_test_encoded.reindex(columns=X_train_encoded.columns, fill_value=0)
 
-#delete rows with missing values
-X = X.dropna()
-y = y[X.index]  
+# Make predictions
+predictions = model.predict(X_test_encoded)
 
-# Convert column names to strings
-X.columns = X.columns.astype(str)
+# Create a DataFrame with all barcodes and their predictions
+predictions_df = pd.DataFrame({
+    'barcode': X_test['barcode'].values,
+    'predicted_tumor_type': predictions
+})
 
-# Split the data into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+# Ensure that all barcodes from X_test are present in the predictions
+all_barcodes = X_test['barcode'].unique()
+predictions_df = predictions_df[predictions_df['barcode'].isin(all_barcodes)]
 
-# Feature selection using SelectKBest with chi-square test
-selector = SelectKBest(chi2, k=10)  # Select top 10 features
-X_train_selected = selector.fit_transform(X_train, y_train)
-X_test_selected = selector.transform(X_test)
+# Save predictions to a CSV file
+predictions_df.to_csv('predictions.csv', index=False)
 
-# Print selected features
-selected_features_indices = selector.get_support(indices=True)
-print("Selected Features Indices: ", selected_features_indices)
-print("Selected Features: ", X.columns[selected_features_indices].tolist())
+print("Predictions saved to 'predictions.csv'")
 
-
-
-
-
-# Initialize and train Random Forest classifier
-rf = RandomForestClassifier(n_estimators=100, random_state=42)
-rf.fit(X_train_selected, y_train)
-
-# Predict on test data
-y_pred_rf = rf.predict(X_test_selected)
-
-# Evaluate performance
-print("Predictions Made")
-print("Random Forest Accuracy: ", accuracy_score(y_test, y_pred_rf)) 
-print("Classification Report:\n", classification_report(y_test, y_pred_rf))
 ```
