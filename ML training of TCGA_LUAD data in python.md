@@ -4,11 +4,6 @@ This project uses the following datasets:
 1. **LUAD Normalized Data**:  [https://github.com/Clintonidahosa/HackBio-projects/blob/main/luad_normalizedData.csv]
 2. **TCGA LUAD Metadata**:   [https://github.com/Clintonidahosa/HackBio-projects/blob/main/TCGA_LUAD_metadata.csv]
 
-### How to Access
-* Download the 2 datasets using the links above
-* move them both to desktop as this is the file path used in this code
-
-
 ```
  #importing necessary libraries
 import pandas as pd
@@ -18,18 +13,15 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
 
 # Load datasets
-data = pd.read_csv(r"C:\Users\DELL\Desktop\luad_normalizedData.csv")
-print(data.head())
+url = "https://raw.githubusercontent.com/Clintonidahosa/HackBio-projects/refs/heads/main/luad_normalizedData.csv"
+data = pd.read_csv(url)
 
-metadata = pd.read_csv(r"C:\Users\DELL\Desktop\TCGA_LUAD_metadata.csv")
-print(metadata.head())
+url2 = "https://raw.githubusercontent.com/Clintonidahosa/HackBio-projects/refs/heads/main/TCGA_LUAD_metadata.csv"
+metadata = pd.read_csv(url2)
 
 # Transpose normalized dataset so I can merge with metadata
 Trans_data = data.T
 Trans_data.reset_index(inplace=True)
-
-# Store transposed data as a CSV file
-Trans_data.to_csv('C:/Users/DELL/Desktop/Trans_data.csv', index=True)
 
 # Add new header row "barcode" to transposed data so I can have common column with metadata
 new_header = pd.DataFrame({'index': ['barcode']})
@@ -46,10 +38,6 @@ modified_data.reset_index(drop=True, inplace=True)
 # Perform the outer merge with metadata
 merged_data = pd.merge(modified_data, metadata, on='barcode', how='outer')
 print("Outer Merge Result:\n", merged_data.head())
-
-# Save the merged DataFrame to CSV on the desktop
-merged_data.to_csv('C:/Users/DELL/Desktop/merged_data.csv', index=False)
-print("Merged data saved as merged_data.csv on Desktop.")
 
 # Feature selection and classification
 # Convert categorical data using one-hot encoding and select the target column
