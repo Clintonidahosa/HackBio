@@ -1,3 +1,14 @@
+### Task - Tumor Type Prediction
+This project uses the following datasets:
+
+1. **LUAD Normalized Data**: 
+2. **TCGA LUAD Metadata**: 
+
+### How to Access
+
+To access the datasets used in this project, you can download them from the links provided above. 
+
+
 ```
  #importing necessary libraries
 import pandas as pd
@@ -7,7 +18,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
 
 # Load datasets
-data = pd.read_csv(r"C:\Users\DELL\Desktop\luad_normalizedData (1).csv")
+data = pd.read_csv(r"C:\Users\DELL\Desktop\luad_normalizedData.csv")
 print(data.head())
 
 metadata = pd.read_csv(r"C:\Users\DELL\Desktop\TCGA_LUAD_metadata.csv")
