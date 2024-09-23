@@ -23,6 +23,9 @@ print("Data Loaded Successfully")
 print("Data Shape:", data.shape)
 print("Metadata Shape:", metadata.shape)
 
+
+
+
 # Transpose normalized dataset so I can merge with metadata
 Trans_data = data.T
 Trans_data.reset_index(inplace=True)
@@ -44,6 +47,10 @@ merged_data = pd.merge(modified_data, metadata, on='barcode', how='outer')
 print("Outer Merge Result:\n", merged_data.head())
 print("Merged Data Shape:", merged_data.shape)
 print("First Few Rows of Merged Data:\n", merged_data.head())
+
+
+
+
 
 # Feature selection and classification
 # Convert categorical data using one-hot encoding and select the target column
@@ -69,6 +76,10 @@ X_test_selected = selector.transform(X_test)
 selected_features_indices = selector.get_support(indices=True)
 print("Selected Features Indices: ", selected_features_indices)
 print("Selected Features: ", X.columns[selected_features_indices].tolist())
+
+
+
+
 
 # Initialize and train Random Forest classifier
 rf = RandomForestClassifier(n_estimators=100, random_state=42)
