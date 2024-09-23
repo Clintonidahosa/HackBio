@@ -5,8 +5,8 @@ This project uses the following datasets:
 2. **TCGA LUAD Metadata**: 
 
 ### How to Access
-
-To access the datasets used in this project, you can download them from the links provided above. 
+** download the 2 datasets 
+*  move them both to desktop as this is the file path used in this code
 
 
 ```
