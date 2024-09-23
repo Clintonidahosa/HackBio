@@ -5,7 +5,7 @@ This project uses the following datasets:
 2. **TCGA LUAD Metadata**:   [https://github.com/Clintonidahosa/HackBio-projects/blob/main/TCGA_LUAD_metadata.csv]
 
 ### How to Access
-* download the 2 datasets 
+* Download the 2 datasets using the links above
 * move them both to desktop as this is the file path used in this code
 
 
