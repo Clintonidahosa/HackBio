@@ -5,9 +5,10 @@ This project uses the following datasets:
 2. **TCGA LUAD Metadata**:   [https://github.com/Clintonidahosa/HackBio-projects/blob/main/TCGA_LUAD_metadata.csv]
 
 ```
-#importing necessary libraries
+# Importing necessary libraries
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, recall_score
 
 # Load datasets
 url_normdata = "https://raw.githubusercontent.com/Clintonidahosa/HackBio-projects/refs/heads/main/luad_normalizedData.csv"
@@ -66,10 +67,16 @@ X_test_encoded = X_test_encoded.reindex(columns=X_train_encoded.columns, fill_va
 # Make predictions
 predictions = model.predict(X_test_encoded)
 
-# Create a DataFrame with all barcodes and their predictions
+# Calculate accuracy and recall for each predicted class
+accuracy = accuracy_score(y_train, model.predict(X_train_encoded))
+recall = recall_score(y_train, model.predict(X_train_encoded), average='weighted')  # Using weighted recall for multiclass
+
+# Create a DataFrame with all barcodes, their predictions, accuracy, and recall
 predictions_df = pd.DataFrame({
     'barcode': X_test['barcode'].values,
-    'predicted_tumor_type': predictions
+    'predicted_tumor_type': predictions,
+    'accuracy': [accuracy] * len(predictions),  # Assign the same accuracy for all rows
+    'power (recall)': [recall] * len(predictions)  # Assign the same recall for all rows
 })
 
 # Ensure that all barcodes from X_test are present in the predictions
@@ -79,6 +86,7 @@ predictions_df = predictions_df[predictions_df['barcode'].isin(all_barcodes)]
 # Save predictions to a CSV file
 predictions_df.to_csv('predictions.csv', index=False)
 
-print("Predictions saved to 'predictions.csv'")
+print("Predictions with accuracy and recall saved to 'predictions.csv'")
+
 
 ```
